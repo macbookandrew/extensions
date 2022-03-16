@@ -12,18 +12,25 @@ async function runTerminal(item: ISSHConnection) {
   const command = `ssh ${identity} ${item.user ? item.user + "@" : ""}${item.address}${item.port ? ":" + item.port : ""}${item.sshKey ? " SSH Key:" + item.sshKey : ""}`;
 
   const script = `
-    tell application "Terminal"
-      do script ""  
-      activate
-      set position of front window to {1, 1}
-      set shell to do script "${command}" in window 1
-    end tell
-    
-    tell application "System Events" to tell process "Terminal"
-        set frontmost to true
-        windows where title contains "bash"
-        if result is not {} then perform action "AXRaise" of item 1 of result
-    end tell
+    if exists application "iTerm" then
+      tell application "iTerm"
+        activate
+        create tab with default profile front window command "${command}"
+      end tell
+    else
+      tell application "Terminal"
+        do script ""
+        activate
+        set position of front window to {1, 1}
+        set shell to do script "${command}" in window 1
+      end tell
+
+      tell application "System Events" to tell process "Terminal"
+          set frontmost to true
+          windows where title contains "bash"
+          if result is not {} then perform action "AXRaise" of item 1 of result
+      end tell
+    end if
   `;
 
   await runAppleScript(script);
