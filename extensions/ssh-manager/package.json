@@ -5,6 +5,9 @@
   "description": "Quickly connect and manage multiple SSH connections",
   "icon": "command-icon.png",
   "author": "dimagrossman",
+  "contributors": [
+    "macbookandrew"
+  ],
   "license": "MIT",
   "commands": [
     {
