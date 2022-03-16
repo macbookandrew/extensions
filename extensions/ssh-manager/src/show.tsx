@@ -9,7 +9,7 @@ async function runTerminal(item: ISSHConnection) {
   if (item.sshKey) {
     identity = `-i ${item.sshKey} `;
   }
-  const command = `ssh ${identity} ${item.user}@${item.address}`;
+  const command = `ssh ${identity} ${item.user ? item.user + "@" : ""}${item.address}${item.port ? ":" + item.port : ""}${item.sshKey ? " SSH Key:" + item.sshKey : ""}`;
 
   const script = `
     tell application "Terminal"
@@ -98,5 +98,5 @@ function Action({
 }
 
 function getSubtitle(item: ISSHConnection) {
-  return `${item.user}@${item.address}${item.sshKey ? " SSH Key:" + item.sshKey : ""}`;
+  return `${item.user ? item.user + "@" : ""}${item.address}${item.port ? ":" + item.port : ""}${item.sshKey ? " SSH Key:" + item.sshKey : ""}`;
 }
