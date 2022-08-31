@@ -28,8 +28,10 @@ export function projectIconUrl(project: Project): string | undefined {
 
 export function projectIcon(project: Project): Image.ImageLike {
   let result: string = GitLabIcons.project;
-  // TODO check also namespace for icon
-  if (project.avatar_url) {
+  if (project.archived) {
+    result = "archive.png";
+  } else if (project.avatar_url) {
+    // TODO check also namespace for icon
     result = project.avatar_url;
   } else if (project.owner && project.owner.avatar_url) {
     result = project.owner.avatar_url;
